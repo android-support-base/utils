@@ -1,0 +1,27 @@
+<resources>
+    <!--工具箱涉及到的字符-->
+    <string name="app_crash">很抱歉，程序出现异常，即将退出。</string>
+    <string name="press_again_to_exit_the_program">再按一次退出程序</string>
+    <string name="popup_pick">拍照</string>
+    <string name="popup_take">从手机相册选择</string>
+    <string name="popup_delete">删除</string>
+    <string name="popup_cancel">取消</string>
+    <string name="dialog_file_too_big">文件过大</string>
+    <string name="version_unknown">版本未知</string>
+    <!--日期时间相关-->
+    <string name="day">天</string>
+    <string name="separated">相隔</string>
+    <string name="yesterday">昨天</string>
+    <string name="before_yesterday">前天</string>
+    <string name="early_morning">凌晨</string>
+    <string name="morning">上午</string>
+    <string name="afternoon">下午</string>
+    <string name="evening">晚上</string>
+    <!--Throwable message-->
+    <string name="time_out">请求超时，请稍后再试</string>
+    <string name="miss_parameter">参数缺失</string>
+    <string name="request_exception">请求异常，请稍后再试</string>
+    <string name="network_exception">请检查网络连接状况</string>
+    <string name="unknown_host_exception">未知主机异常，请检查网络连接状况</string>
+    <string name="server_exception">服务器异常，请稍后再试</string>
+</resources>
