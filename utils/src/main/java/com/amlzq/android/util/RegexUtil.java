@@ -10,9 +10,8 @@ import java.util.regex.Pattern;
  * 正则表达式验证器
  */
 
-@SuppressWarnings("unused")
 public class RegexUtil {
-    public static final String TAG = RegexUtil.class.getSimpleName();
+    public static final String TAG = "RegexUtil";
 
     /**
      * 正则表达式：验证用户名

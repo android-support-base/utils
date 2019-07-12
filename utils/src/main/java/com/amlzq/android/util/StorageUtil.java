@@ -53,6 +53,7 @@ public class StorageUtil {
     /**
      * @return 崩溃目录
      */
+    @Deprecated
     public static File getCrash() {
         String path = getAppRootPath() + File.separator + "Crash";
         return newDir(path);
@@ -61,6 +62,7 @@ public class StorageUtil {
     /**
      * @return 下载目录
      */
+    @Deprecated
     public static File getDownload() {
         String path = getAppRootPath() + File.separator + "Download";
         return newDir(path);
@@ -69,6 +71,7 @@ public class StorageUtil {
     /**
      * @return 图片目录
      */
+    @Deprecated
     public static File getPicture() {
         String path = getAppRootPath() + File.separator + "Picture";
         return newDir(path);
@@ -77,6 +80,7 @@ public class StorageUtil {
     /**
      * @return 临时目录
      */
+    @Deprecated
     public static File getTemp() {
         String path = getAppRootPath() + File.separator + "Temp";
         return newDir(path);
