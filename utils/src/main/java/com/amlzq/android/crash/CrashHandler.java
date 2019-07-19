@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.widget.Toast;
 
+import com.amlzq.android.ApplicationConfig;
 import com.amlzq.android.content.ContextHolder;
 import com.amlzq.android.util.AppUtil;
 import com.amlzq.android.util.PermissionChecker;
@@ -38,7 +39,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
     private static final String TAG = "CrashHandler";
     private static final String FILE_NAME = "crash-";
     /**
-     * log文件的后缀
+     * Log文件的后缀
      */
 //    private static final String FILE_NAME_SUFFIX = ".trace";
     private static final String FILE_NAME_SUFFIX = ".txt";
@@ -55,10 +56,10 @@ public class CrashHandler implements UncaughtExceptionHandler {
      */
     private boolean mDebug;
     /**
-     * 存放路径
-     * 默认为: Android/package/crash
+     * 存储目录
+     * 默认为: Android/data/packageName/crash
      */
-    private String mRootPath;
+    private String mStorageDir;
     /**
      * 时间
      */
@@ -67,8 +68,8 @@ public class CrashHandler implements UncaughtExceptionHandler {
     // 构造方法私有，防止外部构造多个实例，即采用单例模式
     private CrashHandler() {
         mContext = ContextHolder.getContext();
-        mDebug = false;
-        mRootPath = "";
+        mDebug = ApplicationConfig.DEBUG;
+        mStorageDir = "/Android/data/" + mContext.getPackageName() + "/crash";
     }
 
     public static CrashHandler getInstance() {
@@ -89,16 +90,17 @@ public class CrashHandler implements UncaughtExceptionHandler {
     }
 
     /**
-     * @param debug    debug
-     * @param rootPath rootPath
+     * @param debug      debug
+     * @param storageDir storageDir
+     * @hide
      */
-    public void init(boolean debug, String rootPath) {
+    private void init(boolean debug, String storageDir) {
         // 获取系统默认的异常处理器
         mDefaultCrashHandler = Thread.getDefaultUncaughtExceptionHandler();
         // 将当前实例设为系统默认的异常处理器
         Thread.setDefaultUncaughtExceptionHandler(this);
         mDebug = debug;
-        mRootPath = rootPath;
+        mStorageDir = storageDir;
     }
 
     /**
@@ -181,7 +183,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
             }
         }
 
-        File dir = new File(mRootPath);
+        File dir = new File(mStorageDir);
         if (!dir.exists()) {
             dir.mkdirs();
         }
@@ -190,7 +192,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
         String time = this.mDateFormat.format(new Date());
         String fileName = FILE_NAME + time + "-" + timestamp + FILE_NAME_SUFFIX;
         // 以当前时间创建log文件
-        File file = new File(mRootPath + File.separator + fileName);
+        File file = new File(mStorageDir + File.separator + fileName);
 
         try {
             PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file)));
