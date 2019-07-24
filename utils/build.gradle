@@ -72,9 +72,9 @@ publish {
     groupId = 'com.amlzq.android' //
     artifactId = 'utils'
     publishVersion = android.defaultConfig.versionName
-    desc = 'android support utils api'
-    website = 'https://github.com/amlzq/android-support-base/tree/android-support-utils'
-    repository = 'https://github.com/amlzq/android-support-base.git'
+    desc = 'utils api'
+    website = 'https://github.com/android-support-base/utils'
+    repository = 'https://github.com/android-support-base/utils.git'
 }
 
 ////以下是发布到本地 maven 仓库配置
