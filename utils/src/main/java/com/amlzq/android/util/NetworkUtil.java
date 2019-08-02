@@ -1,14 +1,11 @@
 package com.amlzq.android.util;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.support.annotation.IntDef;
 
-import com.amlzq.android.ApplicationConfig;
-import com.amlzq.android.ApplicationConstant;
 import com.amlzq.android.content.ContextHolder;
 
 import java.io.BufferedReader;
@@ -33,7 +30,8 @@ public class NetworkUtil {
     /**
      * @hide
      */
-    NetworkUtil() {
+    private NetworkUtil() {
+        throw new AssertionError();
     }
 
     /**
@@ -44,10 +42,14 @@ public class NetworkUtil {
     }
 
     /**
-     * @return
+     * @return 有效网络信息
      * @permission android.permission.ACCESS_NETWORK_STATE
      */
     public static NetworkInfo getActiveNetworkInfo() {
+//        if (ContextCompat.checkSelfPermission(ContextHolder.getContext(), Manifest.permission.ACCESS_NETWORK_STATE)
+//                != PackageManager.PERMISSION_GRANTED) {
+//            throw new SecurityException("Missing permissions required by ConnectivityManager.getActiveNetworkInfo: android.permission.ACCESS_NETWORK_STATE");
+//        }
         return getConnectivityManager().getActiveNetworkInfo();
     }
 
@@ -131,104 +133,19 @@ public class NetworkUtil {
         }
     }
 
-    // =============================================================================================
-    // 网络状态
-    // =============================================================================================
+    /**
+     * 网络状态
+     */
 
     /**
-     * @return 是否连接上互联网
+     * @return 连入了互联网
      * @permission android.permission.ACCESS_NETWORK_STATE
+     * @prefrence @link{https://developer.android.com/training/monitoring-device-state/connectivity-monitoring?hl=zh-cn#DetermineConnection}
      */
-    public static boolean isConnectionUnavailable() {
-        boolean isConnection = false;
-        try {
-            ConnectivityManager manager = getConnectivityManager();
-            if (manager != null) {
-                NetworkInfo info = manager.getActiveNetworkInfo();
-                if (info == null || !info.isConnected()) {
-                    isConnection = false;
-                } else {
-                    isConnection = true;
-                }
-            } else {
-                // Can't get connectivitManager
-                isConnection = true;
-            }
-        } catch (Exception e) {
-            Logger.w(e);
-        }
-        return isConnection;
-    }
-
-    /**
-     * requires permission[android.permission.ACCESS_NETWORK_STATE]
-     *
-     * @return 单独查询WiFi与Mobile的移动网络是否可用
-     */
-    @SuppressWarnings("deprecation")
-    public static boolean isNetworkAvailable() {
-        ConnectivityManager manager = getConnectivityManager();
-        NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        NetworkInfo mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-        boolean flag = false;
-        if ((wifi != null) && ((wifi.isAvailable()) || (mobile.isAvailable()))) {
-            if ((wifi.isConnected()) || (mobile.isConnected())) {
-                flag = true;
-            }
-        }
-        return flag;
-    }
-
-    public static boolean pinging = false;
-
-    public static boolean ping(String str) {
-        if (pinging) {
-            return true;
-        }
-        pinging = true;
-        boolean resault = false;
-        Process p;
-        try {
-            //ping -c 3 -w 100  中  ，-c 是指ping的次数 3是指ping 3次 ，-w 100  以秒为单位指定超时间隔，是指超时时间为100秒
-            p = Runtime.getRuntime().exec("ping -c 1 -w 5 " + str);
-            int status = p.waitFor();
-
-            InputStream input = p.getInputStream();
-            BufferedReader in = new BufferedReader(new InputStreamReader(input));
-            StringBuffer buffer = new StringBuffer();
-            String line = "";
-            while ((line = in.readLine()) != null) {
-                buffer.append(line);
-            }
-            Logger.d("return ->" + buffer.toString());
-
-            if (status == 0) {
-                resault = true;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        pinging = false;
-        return resault;
-    }
-
-    /**
-     * @return 是否允许在蜂窝网络(2 / 3 / 4 / 5G移动网络)环境通信
-     */
-    public static boolean cellularNetworkConnection() {
-        SharedPreferences preferences = ContextHolder.getContext().getSharedPreferences(ApplicationConfig.SHARED_PREFERENCES_NAME, 0);
-        return preferences != null && preferences.getBoolean(ApplicationConstant.CELLULAR_NETWORK_CONNECTION, false);
-    }
-
-    /**
-     * @param able 激活移动网络
-     */
-    public static void updateCellularNetworkConfig(boolean able) {
-        SharedPreferences.Editor editor = ContextHolder.getContext().getSharedPreferences(ApplicationConfig.SHARED_PREFERENCES_NAME, 0).edit();
-        editor.putBoolean(ApplicationConstant.CELLULAR_NETWORK_CONNECTION, able);
-        editor.apply();
+    public static boolean isConnected() {
+        NetworkInfo info = getActiveNetworkInfo();
+//        return info != null && info.isConnectedOrConnecting();
+        return info != null && info.isConnected();
     }
 
     public static int getNetworkType(Context context) {
@@ -247,6 +164,58 @@ public class NetworkUtil {
             netType = NETTYPE_WIFI;
         }
         return netType;
+    }
+
+    /**
+     * @return 是WiFi网络环境
+     * @prefrence @link{https://developer.android.com/training/monitoring-device-state/connectivity-monitoring?hl=zh-cn#DetermineType}
+     */
+    public static boolean isWiFi() {
+        NetworkInfo info = getActiveNetworkInfo();
+        return info != null && info.getType() == ConnectivityManager.TYPE_WIFI;
+    }
+
+    /**
+     * @return 是移动网络环境
+     */
+    public static boolean isMobile() {
+        NetworkInfo info = getActiveNetworkInfo();
+        return info != null && info.getType() == ConnectivityManager.TYPE_MOBILE;
+    }
+
+    public static boolean pinging = false;
+
+    public static boolean ping(String str) {
+        if (pinging) {
+            return true;
+        }
+        pinging = true;
+        boolean resault = false;
+        Process process;
+        try {
+            //ping -c 3 -w 100  中  ，-c 是指ping的次数 3是指ping 3次 ，-w 100  以秒为单位指定超时间隔，是指超时时间为100秒
+            process = Runtime.getRuntime().exec("ping -c 1 -w 5 " + str);
+            int status = process.waitFor();
+
+            InputStream input = process.getInputStream();
+            BufferedReader in = new BufferedReader(new InputStreamReader(input));
+            StringBuffer buffer = new StringBuffer();
+            String line = "";
+            while ((line = in.readLine()) != null) {
+                buffer.append(line);
+            }
+            Logger.d("return ->" + buffer.toString());
+
+            if (status == 0) {
+                resault = true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        pinging = false;
+        return resault;
     }
 
 }

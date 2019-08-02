@@ -14,9 +14,8 @@ import java.util.Locale;
  * <p>
  * 日期工具类
  */
-@SuppressWarnings("unused")
+
 public class DateUtil {
-    private static final String TAG = DateUtil.class.getSimpleName();
 
     private static final SimpleDateFormat FORMAT_DATETIME = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
     private static final SimpleDateFormat FORMAT_DATE = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -213,6 +212,91 @@ public class DateUtil {
      */
     public static String toMillisecondTimestamp(String secondTimestamp) {
         return secondTimestamp + "000";
+    }
+
+    /**
+     * 将时间戳转为日期
+     * 格式: 当天，昨天，昨天之前
+     * from com.hyphenate.util.DateUtils.java
+     */
+    public static String getTimestampString(Date date) {
+        String pattern = null;
+        String language = Locale.getDefault().getLanguage();
+        boolean isChinese = language.startsWith("zh");
+        long milliseconds = date.getTime();
+        if (isSameDay(milliseconds)) {
+            if (isChinese) {
+                pattern = "aa hh:mm";
+            } else {
+                pattern = "hh:mm aa";
+            }
+        } else if (isYesterday(milliseconds)) {
+            if (!isChinese) {
+                return "Yesterday " + (new SimpleDateFormat("hh:mm aa", Locale.ENGLISH)).format(date);
+            }
+
+            pattern = "昨天aa hh:mm";
+        } else if (isChinese) {
+            pattern = "M月d日aa hh:mm";
+        } else {
+            pattern = "MMM dd hh:mm aa";
+        }
+
+        return isChinese ? (new SimpleDateFormat(pattern, Locale.CHINESE)).format(date) : (new SimpleDateFormat(pattern, Locale.ENGLISH)).format(date);
+    }
+
+    private static boolean isSameDay(long milliseconds) {
+        TimeInfo info = getTodayStartAndEndTime();
+        return milliseconds > info.getStartTime() && milliseconds < info.getEndTime();
+    }
+
+    private static boolean isYesterday(long milliseconds) {
+        TimeInfo info = getYesterdayStartAndEndTime();
+        return milliseconds > info.getStartTime() && milliseconds < info.getEndTime();
+    }
+
+    public static TimeInfo getTodayStartAndEndTime() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(11, 0);
+        calendar.set(12, 0);
+        calendar.set(13, 0);
+        calendar.set(14, 0);
+        Date date = calendar.getTime();
+        long milliseconds = date.getTime();
+        Calendar var4 = Calendar.getInstance();
+        var4.set(11, 23);
+        var4.set(12, 59);
+        var4.set(13, 59);
+        var4.set(14, 999);
+        Date var5 = var4.getTime();
+        long var6 = var5.getTime();
+        TimeInfo info = new TimeInfo();
+        info.setStartTime(milliseconds);
+        info.setEndTime(var6);
+        return info;
+    }
+
+    public static TimeInfo getYesterdayStartAndEndTime() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(5, -1);
+        calendar.set(11, 0);
+        calendar.set(12, 0);
+        calendar.set(13, 0);
+        calendar.set(14, 0);
+        Date date = calendar.getTime();
+        long milliseconds = date.getTime();
+        Calendar var4 = Calendar.getInstance();
+        var4.add(5, -1);
+        var4.set(11, 23);
+        var4.set(12, 59);
+        var4.set(13, 59);
+        var4.set(14, 999);
+        Date var5 = var4.getTime();
+        long var6 = var5.getTime();
+        TimeInfo info = new TimeInfo();
+        info.setStartTime(milliseconds);
+        info.setEndTime(var6);
+        return info;
     }
 
 }

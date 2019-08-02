@@ -12,14 +12,16 @@ import android.util.Log;
  * https://developer.android.com/studio/debug/am-logcat?hl=zh-cn
  * <p>
  * format"date time PID-TID/package priority/tag: message"
+ * <p>
+ * 已经弃用，改为com.amlzq.android:log
  */
-
+@Deprecated
 public final class Logger {
 
     /**
      * @hide
      */
-    Logger() {
+    private Logger() {
     }
 
     /**

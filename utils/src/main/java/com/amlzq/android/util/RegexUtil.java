@@ -11,7 +11,6 @@ import java.util.regex.Pattern;
  */
 
 public class RegexUtil {
-    public static final String TAG = "RegexUtil";
 
     /**
      * 正则表达式：验证用户名
@@ -191,6 +190,16 @@ public class RegexUtil {
      */
     public static boolean isMoney(String money) {
         return Pattern.matches(REGEX_MONEY, money);
+    }
+
+    /**
+     * 正则表达式：验证媒体文件
+     */
+    public static final String REGEX_VIDEO = "(mp4|flv|avi|rm|rmvb|wmv)";
+
+    public static boolean isVideo(String fileName) {
+        Pattern pattern = Pattern.compile(REGEX_VIDEO);
+        return pattern.matcher(fileName).find();
     }
 
 }

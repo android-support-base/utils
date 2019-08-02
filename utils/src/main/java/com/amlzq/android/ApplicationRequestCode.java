@@ -6,7 +6,6 @@ package com.amlzq.android;
  * startActivityForResult的请求码
  * MyRequestCode继承此类
  */
-
 public abstract class ApplicationRequestCode {
 
     public static final int UNIQUE = 0x000000;

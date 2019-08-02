@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
@@ -118,6 +119,28 @@ public class IntentUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return intent;
+    }
+
+    /**
+     * @return 相册/图片选择器的意图
+     */
+    public static Intent getImagePicker() {
+        Intent intent = new Intent();
+        if (Build.VERSION.SDK_INT >= 19) {
+            intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+        } else {
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            intent.setType("image/*");
+        }
+        return intent;
+    }
+
+    public static Intent getCamera(String authority, File file) {
+        Intent intent = new Intent();
+        intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, UriUtil.getUriForFile(authority, file));
         return intent;
     }
 

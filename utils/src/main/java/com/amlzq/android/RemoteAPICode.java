@@ -5,7 +5,6 @@ package com.amlzq.android;
  * <p>
  * 远程接口code
  */
-
 public class RemoteAPICode {
 
 }

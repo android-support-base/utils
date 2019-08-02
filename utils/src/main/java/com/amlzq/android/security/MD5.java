@@ -21,7 +21,6 @@ import java.security.NoSuchAlgorithmException;
  *
  * @author amlzq
  */
-
 public class MD5 {
 
     private static final String ALGORITHM = "MD5";

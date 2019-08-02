@@ -2,6 +2,8 @@ package com.amlzq.android.util;
 
 import android.text.TextUtils;
 
+import com.amlzq.android.log.Log;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -55,8 +57,43 @@ public class FileUtil {
     /**
      * @hide
      */
-    FileUtil() {
+    private FileUtil() {
         throw new AssertionError();
+    }
+
+    /**
+     * move to File
+     *
+     * @param parent The parent pathname string
+     * @param child  The child pathname string
+     * @return 新建目录
+     */
+    public static File newDir(File parent, String child) {
+        File dir = new File(parent, child);
+        boolean wasSuccessful = true;
+        if (!dir.exists()) {
+            wasSuccessful = dir.mkdirs();
+        }
+        if (!wasSuccessful) {
+            Log.w("mkdirs was not successful.");
+        }
+        return dir;
+    }
+
+    /**
+     * @param dir      目录名
+     * @param fileName 文件名
+     */
+    public static boolean deleteFile(File dir, String fileName) {
+        File file = new File(dir.getAbsolutePath() + File.separator + fileName);
+        boolean wasSuccessful = false;
+        if (file.exists()) {
+            wasSuccessful = file.delete();
+        }
+        if (!wasSuccessful) {
+            Log.w("delete not successful.");
+        }
+        return wasSuccessful;
     }
 
     /**

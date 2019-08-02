@@ -8,6 +8,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ServiceInfo;
 import android.content.res.AssetManager;
+import android.os.Bundle;
 
 import com.amlzq.android.content.ContextHolder;
 
@@ -49,9 +50,16 @@ public class DataUtil {
         return stringBuilder.toString();
     }
 
-    // ===========================================
-    // TODO: 获取 META_DATA
-    // ===========================================
+    public Bundle getMetaData(Context context) {
+        Bundle bundle = null;
+        try {
+            ApplicationInfo appInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+            bundle = appInfo.metaData;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return bundle;
+    }
 
     public static String getApplication(String key) {
         final Context cxt = ContextHolder.getContext();

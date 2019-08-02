@@ -374,7 +374,7 @@ public class SystemUtil {
      */
     public static void installApp(@NonNull Context context, File file) {
         // 提供默认的authority
-        installApp(context, file, ApplicationConstant.AUTHORITIES);
+        installApp(context, file, ApplicationConstant.AUTHORITY);
     }
 
     /**

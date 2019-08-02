@@ -7,8 +7,11 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Binder;
 import android.os.Build;
+import android.os.Environment;
 
+import com.amlzq.android.ApplicationConfig;
 import com.amlzq.android.content.ContextHolder;
+import com.amlzq.android.log.Log;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -194,6 +197,38 @@ public class AppUtil {
             e.printStackTrace();
         }
         return false;
+    }
+
+    /**
+     * Get the directory for the user's public pictures directory.
+     * 获取用户公共图片目录。
+     * 保存用户图片数据，比如从动态中下载保存的图片，放到系统相册中，新建目录
+     */
+    public File getPicturesStorageDir() {
+        File file = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), ApplicationConfig.IDENTIFY);
+        if (!file.mkdirs()) {
+            Log.e("this app public pictures directory not created");
+        }
+        return file;
+    }
+
+    public File getMusicStorageDir() {
+        File file = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_MUSIC), ApplicationConfig.IDENTIFY);
+        if (!file.mkdirs()) {
+            Log.e("this app public music directory not created");
+        }
+        return file;
+    }
+
+    public File getMoviesStorageDir() {
+        File file = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_MOVIES), ApplicationConfig.IDENTIFY);
+        if (!file.mkdirs()) {
+            Log.e("this app public movies directory not created");
+        }
+        return file;
     }
 
 }
