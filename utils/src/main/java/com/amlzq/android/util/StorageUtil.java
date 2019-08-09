@@ -239,6 +239,13 @@ public class StorageUtil {
     }
 
     /**
+     * @return 相机摄影和拍照的目录
+     */
+    public static File getExternalPublicCameraDir() {
+        return new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + File.separator + "Camera");
+    }
+
+    /**
      * @return 用于放置用户创建的文档的标准目录。
      * @path
      */

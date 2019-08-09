@@ -204,7 +204,7 @@ public class AppUtil {
      * 获取用户公共图片目录。
      * 保存用户图片数据，比如从动态中下载保存的图片，放到系统相册中，新建目录
      */
-    public File getPicturesStorageDir() {
+    public static File getPicturesStorageDir() {
         File file = new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES), ApplicationConfig.IDENTIFY);
         if (!file.mkdirs()) {
@@ -213,7 +213,16 @@ public class AppUtil {
         return file;
     }
 
-    public File getMusicStorageDir() {
+    public static File getDownloadsStorageDir() {
+        File file = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DOWNLOADS), ApplicationConfig.IDENTIFY);
+        if (!file.mkdirs()) {
+            Log.e("this app public downloads directory not created");
+        }
+        return file;
+    }
+
+    public static File getMusicStorageDir() {
         File file = new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_MUSIC), ApplicationConfig.IDENTIFY);
         if (!file.mkdirs()) {
@@ -222,11 +231,20 @@ public class AppUtil {
         return file;
     }
 
-    public File getMoviesStorageDir() {
+    public static File getMoviesStorageDir() {
         File file = new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_MOVIES), ApplicationConfig.IDENTIFY);
         if (!file.mkdirs()) {
             Log.e("this app public movies directory not created");
+        }
+        return file;
+    }
+
+    public static File getDocumentsStorageDir() {
+        File file = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DOCUMENTS), ApplicationConfig.IDENTIFY);
+        if (!file.mkdirs()) {
+            Log.e("this app public documents directory not created");
         }
         return file;
     }

@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.support.annotation.IntDef;
+import android.support.annotation.RequiresPermission;
 
 import com.amlzq.android.content.ContextHolder;
 
@@ -43,8 +44,8 @@ public class NetworkUtil {
 
     /**
      * @return 有效网络信息
-     * @permission android.permission.ACCESS_NETWORK_STATE
      */
+    @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
     public static NetworkInfo getActiveNetworkInfo() {
 //        if (ContextCompat.checkSelfPermission(ContextHolder.getContext(), Manifest.permission.ACCESS_NETWORK_STATE)
 //                != PackageManager.PERMISSION_GRANTED) {
