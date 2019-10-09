@@ -7,8 +7,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.amlzq.android.security.Hmac;
-import com.amlzq.android.security.MD5;
 import com.amlzq.android.util.DeviceUtil;
 import com.amlzq.android.util.KeyboardUtil;
 import com.amlzq.android.util.RegexUtil;
@@ -104,22 +102,7 @@ public class MainActivity extends Activity {
     }
 
     private void printMessage(String key, String message) {
-        mTVInfo.append("\n" + message);
-        mTVInfo.append("\n" + key);
-        Log.i(TAG, "message: " + message + "," + message.length());
-        Log.i(TAG, "key:" + key + "," + key.length());
-        String MD5_ = MD5.encode(message);
-        String MD5_BYTE = MD5.encode(message.getBytes());
-        String HmacMD5 = Hmac.encrypt(Hmac.Algorithm.HmacMD5, message, key);
-        String HmacSHA1 = Hmac.encrypt(Hmac.Algorithm.HmacSHA1, message, key);
-        String HmacSHA256 = Hmac.encrypt(Hmac.Algorithm.HmacSHA256, message, key);
-        String HmacSHA512 = Hmac.encrypt(Hmac.Algorithm.HmacSHA512, message, key);
-        Log.i(TAG, MD5_ + "," + MD5_.length());
-        Log.i(TAG, MD5_BYTE + "," + MD5_BYTE.length());
-        Log.i(TAG, HmacMD5 + "," + HmacMD5.length());
-        Log.i(TAG, HmacSHA1 + "," + HmacSHA1.length());
-        Log.i(TAG, HmacSHA256 + "," + HmacSHA256.length());
-        Log.i(TAG, HmacSHA512 + "," + HmacSHA512.length());
+
     }
 
     public void onAction(View view) {

@@ -24,7 +24,30 @@ allprojects {
     }
     gradle.projectsEvaluated {// 显示打包错误的详细信息
         tasks.withType(JavaCompile) {
-            options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+            // Try to turn them all off automatically
+            options.compilerArgs << '-Xlint:none'
+            options.compilerArgs << '-nowarn' // same as '-Xlint:none'
+            // Turn them off manually
+            options.compilerArgs << '-Xlint:auxiliaryclass'
+            options.compilerArgs << '-Xlint:cast'
+            options.compilerArgs << '-Xlint:classfile'
+            options.compilerArgs << '-Xlint:deprecation'
+            options.compilerArgs << '-Xlint:dep-ann'
+            options.compilerArgs << '-Xlint:divzero'
+            options.compilerArgs << '-Xlint:empty'
+            options.compilerArgs << '-Xlint:fallthrough'
+            options.compilerArgs << '-Xlint:finally'
+            options.compilerArgs << '-Xlint:options'
+            options.compilerArgs << '-Xlint:overloads'
+            options.compilerArgs << '-Xlint:overrides'
+            options.compilerArgs << '-Xlint:path'
+            options.compilerArgs << '-Xlint:processing'
+            options.compilerArgs << '-Xlint:rawtypes'
+            options.compilerArgs << '-Xlint:serial'
+            options.compilerArgs << '-Xlint:static'
+            options.compilerArgs << '-Xlint:try'
+            options.compilerArgs << '-Xlint:unchecked'
+            options.compilerArgs << '-Xlint:varargs'
         }
     }
 }
@@ -55,4 +78,7 @@ ext {
     // amlzq library，Multiple module use
     logVersion = '1.0.4'
     annotationsVersion = '1.0.0'
+    utilsVersion = '1.0.5'
+    uiVersion = '1.0.5'
+    ioVersion = '1.0.1'
 }
