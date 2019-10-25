@@ -1,4 +1,4 @@
-package com.esports.lib_common_module.utils;
+package com.amlzq.android.util;
 
 import android.content.Context;
 import android.content.res.Configuration;
